@@ -58,5 +58,5 @@ So, in a nutshell, that was all about the working of GoAlgo.
   <br> To deactivate the environment : `conda deactivate` <br>
 4. Install dependencies with pip or conda: `pip install -r requirements.txt` or `conda install -r requirements.txt` <br>
 6. Make sure to activate the environment. Then open the command line and run the app: `python app.py` <br>
-
+7. go and check https://goalgo-1.herokuapp.com/
 
