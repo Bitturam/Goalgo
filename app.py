@@ -15,6 +15,11 @@ import numpy as np
 import pandas as pd
 from logic import preprocess,create_tfidf_features,calculate_similarity,show_similar_documents,df,html_codes,titles,urls,run_bm25,spell
 import html
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -23,6 +28,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY']='mysecret'
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir,'data.sqlite')
 database_path = os.getenv('DATABASE_URL')
+print(database_path)
 app.config['SQLALCHEMY_DATABASE_URI'] = database_path
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 

@@ -23,8 +23,39 @@ __all__ = ['preprocess', 'create_tfidf_features', 'calculate_similarity', 'show_
 
 # Create your connection.
 cnx = sqlite3.connect('data.sqlite')
+cursor = cnx.cursor()
+
+# Create the 'example' table
+create_table_query = '''
+CREATE TABLE IF NOT EXISTS example (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    keywords TEXT,
+    html TEXT,
+    url TEXT
+);
+'''
+cursor.execute(create_table_query)
+
+# Sample data for insertion
+data = [
+    ("Title 1", "Keywords 1", "HTML 1", "URL 1"),
+    ("Title 2", "Keywords 2", "HTML 2", "URL 2"),
+    # Add more data entries as needed
+]
+
+# Insert data into the 'example' table
+insert_query = "INSERT INTO example (title, keywords, html, url) VALUES (?, ?, ?, ?)"
+for entry in data:
+    cursor.execute(insert_query, entry)
+
+# Commit changes and close the cursor and connection
+cnx.commit()
+cursor.close()
+cnx.close()
 
 #Read the Data
+cnx = sqlite3.connect('data.sqlite')
 df = pd.read_sql_query("SELECT * FROM example", cnx)
 titles=[title for title in df['title']]
 html_codes=[html for html in df['html']]
@@ -138,9 +169,9 @@ def run_bm25(query,part=False):
     tokenized_query = query.split(" ")
     doc_scores = bm25.get_scores(tokenized_query)
     results = bm25.get_top_n(tokenized_query, corpus)
-    # for result in results:
-    #     print(result+'\n\n')
-    # print(sorted(doc_scores)[::-1][:5])
+    for result in results:
+        print(result+'\n\n')
+    print(sorted(doc_scores)[::-1][:5])
     scores = sorted(doc_scores)[::-1][:5]
     object = {}
     print('BM-25 Top 5 Results'+'\n')
